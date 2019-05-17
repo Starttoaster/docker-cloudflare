@@ -5,7 +5,7 @@ dDNS container for Cloudflare A Records. Finds A Record identifiers and updates 
 
 You can either start this container via `docker run` or `docker-compose`. I attached a sample docker-compose.yml file in the repo to use if desired.
 
-Via docker run: docker run -d -e USER_EMAIL="email@email.com" -e USER_APIKEY="my_global_api_key" -e USER_ZONE="my_zone_id" starttoaster/cloudflare-ddns
+Via docker run: `docker run -d -e USER_EMAIL="email@email.com" -e USER_APIKEY="my_global_api_key" -e USER_ZONE="my_zone_id" starttoaster/cloudflare-ddns`
 
 NOTE: The bare minimum required details to interact with Cloudflare's DNS API is the account email, Global API Key, and Zone ID attributes. This container finds other necessary attributes 
 without requiring user input by itself, but if you need help finding the 3 required attributes I listed, view the section below regarding "API Attributes".
