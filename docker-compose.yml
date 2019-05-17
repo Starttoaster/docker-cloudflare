@@ -1,0 +1,12 @@
+version: '2'
+services:
+
+ cloudflare:
+   container_name: cloudflare-dns
+   image: starttoaster/cloudflare-ddns:latest
+   environment:
+     - INTERVAL=#####
+     - USER_EMAIL=example@email.com
+     - USER_APIKEY=examplekeywithsomenumbers3241095642
+     - USER_ZONE=examplezonewithsomenumbers34095243832320934
+
