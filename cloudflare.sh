@@ -68,5 +68,7 @@ getIdent | while read -r IDENT; do
 		PROXY=$(getProxy)
                 setIP
         fi;done
+
+export INTERVAL=$(echo "$INTERVAL" | sed 's/[A-Za-z]//g')
 sleep "$INTERVAL"s
 done
