@@ -19,12 +19,13 @@ without requiring user input by itself, but if you need help finding the 3 requi
 | -e USER_APIKEY | A unique 'Global API Key' is assigned to every Cloudflare DNS user | Required |
 | -e USER_ZONE | A unique 'Zone ID' is assigned to each domain registered in a Cloudflare account | Required |
 
+NOTE: Please be nice to Cloudflare's API. Don't set a custom interval of less than a minute. About 3-5 minutes is pretty standard.
+
 # API Attributes
 
 Email: This is simply the email address used to sign up for Cloudflare. This can be found under "My Profile".
 
 Global API Key: This is found in the Cloudflare website under "My Profile > API Keys > Global API Key" 
-
 [See this link on finding the Global API Key](https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-CloudFlare-API-key-)
 
 Zone Identifier: Found in the Cloudflare website on your domain's "Overview" page written as "Zone ID"
@@ -33,7 +34,7 @@ Zone Identifier: Found in the Cloudflare website on your domain's "Overview" pag
 
 | Hardware | Utilization |
 | ---- | ---- |
-| Disk | 8.4MB |
+| Disk | 6.85MB |
 | CPU | Basically nothing |
 | RAM | 1.1MB |
 
