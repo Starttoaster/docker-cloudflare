@@ -4,50 +4,62 @@ EMAIL="$USER_EMAIL"
 GAPIK="$USER_APIKEY"
 ZONE="$USER_ZONE"
 
+if [ -z "$GAPIK" ] || [ -z "$EMAIL" ] || [ -z "$ZONE" ]; then
+    echo "Missing required environment variables!!" 1>&2
+    exit 1
+fi
+
 while true
 do
 getIdent() {
-        wget --no-check-certificate --header="X-Auth-Email: "$EMAIL"" --header="X-Auth-Key: "$GAPIK"" \
-                -qO- "https://api.cloudflare.com/client/v4/zones/"$ZONE"/dns_records" \
-                | tr '[' '\n' \
-                | tr ',' '\n' \
-                | sed 's/{//g' \
-                | grep "id" \
-                | grep -v "zone" \
-                | sed 's/"id"://g' \
-                | sed 's/"//g'
+        curl -sX GET "https://api.cloudflare.com/client/v4/zones/"$ZONE"/dns_records" \
+             -H "X-Auth-Email: "$EMAIL"" \
+             -H "X-Auth-Key: "$GAPIK"" \
+             -H "Content-Type: application/json" \
+             | tr '[' '\n' \
+             | tr ',' '\n' \
+             | grep "id" \
+             | grep -v "zone" \
+             | sed 's/ //g' \
+             | sed 's/{"id":"//g' \
+             | sed 's/"//g'
 }
 getType() {
-        wget --no-check-certificate --header="X-Auth-Email: "$EMAIL"" --header="X-Auth-Key: "$GAPIK"" \
-                -qO- "https://api.cloudflare.com/client/v4/zones/"$ZONE"/dns_records/"$IDENT"" \
-                | tr '[' '\n' \
-                | tr ',' '\n' \
-                | sed 's/{//g' \
-                | grep "type" \
-                | sed 's/"type"://g' \
-                | sed 's/"//g'
+        curl -sX GET "https://api.cloudflare.com/client/v4/zones/"$ZONE"/dns_records/"$IDENT"" \
+             -H "X-Auth-Email: "$EMAIL"" \
+             -H "X-Auth-Key: "$GAPIK"" \
+             -H "Content-Type: application/json" \
+             | tr '[' '\n' \
+             | tr ',' '\n' \
+             | grep "type" \
+             | sed 's/ //g' \
+             | sed 's/"type":"//g' \
+             | sed 's/"//g'
 }
 getSub() {
-        wget --no-check-certificate --header="X-Auth-Email: "$EMAIL"" --header="X-Auth-Key: "$GAPIK"" \
-                -qO- "https://api.cloudflare.com/client/v4/zones/"$ZONE"/dns_records/"$IDENT"" \
-                | tr '[' '\n' \
-                | tr ',' '\n' \
-                | sed 's/{//g' \
-                | grep "name" \
-                | grep -v "zone" \
-                | sed 's/"name"://g' \
-                | sed 's/"//g' \
-                | cut -f1 -d"."
+        curl -sX GET "https://api.cloudflare.com/client/v4/zones/"$ZONE"/dns_records/"$IDENT"" \
+             -H "X-Auth-Email: "$EMAIL"" \
+             -H "X-Auth-Key: "$GAPIK"" \
+             -H "Content-Type: application/json" \
+             | tr '[' '\n' \
+             | tr ',' '\n' \
+             | grep "name" \
+             | grep -v "zone" \
+             | sed 's/ //g' \
+             | sed 's/"name":"//g' \
+             | cut -f1 -d"."
 }
 getProxy() {
-	wget --no-check-certificate --header="X-Auth-Email: "$EMAIL"" --header="X-Auth-Key: "$GAPIK"" \
-		-qO- "https://api.cloudflare.com/client/v4/zones/"$ZONE"/dns_records/"$IDENT"" \
-		| tr '[' '\n' \
-		| tr ',' '\n' \
-		| sed 's/{//g' \
-		| grep "proxied" \
-		| sed 's/"proxied"://g' \
-		| sed 's/"//g'
+        curl -sX GET "https://api.cloudflare.com/client/v4/zones/"$ZONE"/dns_records/"$IDENT"" \
+             -H "X-Auth-Email: "$EMAIL"" \
+             -H "X-Auth-Key: "$GAPIK"" \
+             -H "Content-Type: application/json" \
+             | tr '[' '\n' \
+             | tr ',' '\n' \
+             | sed 's/{//g' \
+             | grep "proxied" \
+             | sed 's/"proxied"://g' \
+             | sed 's/"//g'
 }
 setIP() {
 	IP=$(curl -s4 ifconfig.co)
@@ -72,5 +84,5 @@ getIdent | while read -r IDENT; do
 echo "*****************"
 
 export INTERVAL=$(echo "$INTERVAL" | sed 's/[A-Za-z]//g')
-sleep "$INTERVAL"s
+sleep "$INTERVAL"
 done

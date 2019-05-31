@@ -34,7 +34,7 @@ without requiring user input by itself, but if you need help finding the 3 requi
 
 | Hardware | Utilization |
 | ---- | ---- |
-| Disk | 6.85MB |
+| Disk | 4.24 MB |
 | CPU | Basically nothing |
-| RAM | 1.1MB |
+| RAM | 3.2 MB |
 
